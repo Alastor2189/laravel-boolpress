@@ -1978,15 +1978,10 @@ var render = function render() {
   var _vm = this,
       _c = _vm._self._c;
 
-  return _vm._m(0);
+  return _c("div", [_c("h1", [_vm._v("Front office")]), _vm._v(" "), _c("WorkInProgress")], 1);
 };
 
-var staticRenderFns = [function () {
-  var _vm = this,
-      _c = _vm._self._c;
-
-  return _c("div", [_c("h1", [_vm._v("Front office")])]);
-}];
+var staticRenderFns = [];
 render._withStripped = true;
 
 

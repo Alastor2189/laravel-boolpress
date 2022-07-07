@@ -55,8 +55,8 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        $current_post = Post::findOrFail($id);
-        return view('admin.posts.show', compact('current_post'));
+        $post = Post::findOrFail($id);
+        return view('admin.posts.show', compact('post'));
     }
 
     /**
@@ -79,7 +79,14 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate($this->checkValidationRules());
+        $data = $request->all();
+        $current_post = Post::findOrFail($id);
+        $current_post->fill($data);
+        $current_post->slug = $this->generatePostSlug($current_post->title);
+        $current_post->save();
+
+        return redirect()->route('admin.posts.show', ['post' => $current_post->id]);
     }
 
     /**
@@ -90,7 +97,10 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $current_post = Post::findOrFail($id);
+        $current_post->delete();
+
+        return redirect()->route('admin.posts.index');
     }
 
     private function generatePostSlug($title)

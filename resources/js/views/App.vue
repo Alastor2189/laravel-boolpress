@@ -1,6 +1,7 @@
 <template>
     <div>
         <h1>Front office</h1>
+        <WorkInProgress/>
     </div>
 </template>
 <script>
