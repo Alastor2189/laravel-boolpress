@@ -67,7 +67,8 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post = Post::findOrFail($id);
+        return view('admin.posts.edit', compact('post'));
     }
 
     /**
@@ -81,12 +82,12 @@ class PostController extends Controller
     {
         $request->validate($this->checkValidationRules());
         $data = $request->all();
-        $current_post = Post::findOrFail($id);
-        $current_post->fill($data);
-        $current_post->slug = $this->generatePostSlug($current_post->title);
-        $current_post->save();
+        $post = Post::findOrFail($id);
+        $post->fill($data);
+        $post->slug = $this->generatePostSlug($post->title);
+        $post->save();
 
-        return redirect()->route('admin.posts.show', ['post' => $current_post->id]);
+        return redirect()->route('admin.posts.show', ['post' => $post->id]);
     }
 
     /**

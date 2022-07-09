@@ -20,7 +20,7 @@
         <div class="form-group">
             <label for="title">Title</label>
             <input type="text" class="form-control" name="title" id="title"
-                value="{{ old('title') ? old('title') : $current_post->title }}">
+                value="{{ old('title') ? old('title') : $post->title }}">
         </div>
         <div class="form-group">
             <label for="content">Content</label>
