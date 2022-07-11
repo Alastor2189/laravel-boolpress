@@ -3,6 +3,7 @@
 @section('content')
     <h1> {{ $post->title }} </h1>
     <p>Slug: {{ $post->slug }}</p>
+    <p>Categoria: {{ $category ? $category->name : 'nessuna categoria' }}</p>
     <p>{{ $post->content }}</p>
 
     <div class="d-flex justify-content-between" style="max-width: 150px; min-width: 120px">
