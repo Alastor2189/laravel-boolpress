@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Category;
 use App\Http\Controllers\Controller;
 use App\Post;
 use Illuminate\Http\Request;
@@ -27,7 +28,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('admin.posts.create');
+        $categories = Category::all();
+        return view('admin.posts.create', compact('categories'));
     }
 
     /**
@@ -42,7 +44,7 @@ class PostController extends Controller
         $data = $request->all();
         $new_post = new Post();
         $new_post->fill($data);
-        $new_post->slug = $this->generatePostSlug($new_post->title);
+        $new_post->slug = Post::generatePostSlugFromTitle($new_post->title);
         $new_post->save();
         return redirect()->route('admin.posts.show', ['post' => $new_post->id]);
     }
@@ -56,7 +58,8 @@ class PostController extends Controller
     public function show($id)
     {
         $post = Post::findOrFail($id);
-        return view('admin.posts.show', compact('post'));
+        $category = $post->category;
+        return view('admin.posts.show', compact('post', 'category'));
     }
 
     /**
@@ -67,8 +70,8 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        $post = Post::findOrFail($id);
-        return view('admin.posts.edit', compact('post'));
+        $categories = Category::all();
+        return view('admin.posts.edit', compact('post', 'categories'));
     }
 
     /**
@@ -83,9 +86,12 @@ class PostController extends Controller
         $request->validate($this->checkValidationRules());
         $data = $request->all();
         $post = Post::findOrFail($id);
-        $post->fill($data);
-        $post->slug = $this->generatePostSlug($post->title);
-        $post->save();
+        // $post->fill($data);
+        // $post->slug = $this->generatePostSlug($post->title);
+        // $post->save();
+
+        $data['slug'] = Post::generatePostSlugFromTitle($data['title']);
+        $post->update($data);
 
         return redirect()->route('admin.posts.show', ['post' => $post->id]);
     }
@@ -123,7 +129,8 @@ class PostController extends Controller
     {
         return [
             'title' => 'required|max:255',
-            'content' => 'required|max:45000'
+            'content' => 'required|max:45000',
+            'category_id' => 'nullable|exists:categories,id'
         ];
     }
 }

@@ -22,10 +22,10 @@ class CategoriesTableSeeder extends Seeder
             'Altri sport'
         ];
 
-        foreach ($categories as $item) {
+        foreach ($categories as $category) {
             $new_category = new Category();
-            $new_category->name = $item;
-            $new_category->slug = Str::slug($new_category->name, '-');
+            $new_category->name = $category;
+            $new_category->slug = Str::slug($category, '-');
             $new_category->save();
         }
     }
