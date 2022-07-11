@@ -42,11 +42,11 @@ class PostController extends Controller
     {
         $request->validate($this->checkValidationRules());
         $data = $request->all();
-        $new_post = new Post();
-        $new_post->fill($data);
-        $new_post->slug = Post::generatePostSlugFromTitle($new_post->title);
-        $new_post->save();
-        return redirect()->route('admin.posts.show', ['post' => $new_post->id]);
+        $post = new Post();
+        $post->fill($data);
+        $post->slug = Post::generatePostSlugFromTitle($post->title);
+        $post->save();
+        return redirect()->route('admin.posts.show', ['post' => $post->id]);
     }
 
     /**
@@ -70,6 +70,7 @@ class PostController extends Controller
      */
     public function edit($id)
     {
+        $post = Post::findOrFail($id);
         $categories = Category::all();
         return view('admin.posts.edit', compact('post', 'categories'));
     }
