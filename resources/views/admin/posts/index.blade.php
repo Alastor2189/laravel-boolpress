@@ -19,4 +19,5 @@
             {{-- Card --}}
         @endforeach
     </div>
+    {{ $posts->links() }}
 @endsection
