@@ -6,8 +6,14 @@
 
 <script>
 export default {
-    name: 'WorkInProgress'
-}
+    name: 'WorkInProgress',
+
+    data() {
+        return {};
+    },
+    created() {},
+    methods: {},
+};
 </script>
 
 <style>

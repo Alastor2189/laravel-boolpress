@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Post;
 use App\Tag;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -42,15 +41,18 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate($this->checkValidationRules());
+        $request->validate($this->getValidationRules());
+
         $data = $request->all();
         $post = new Post();
         $post->fill($data);
         $post->slug = Post::generatePostSlugFromTitle($post->title);
         $post->save();
+
         if (isset($data['tags'])) {
             $post->tags()->sync($data['tags']);
         }
+
         return redirect()->route('admin.posts.show', ['post' => $post->id]);
     }
 
@@ -90,13 +92,18 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate($this->checkValidationRules());
+        $request->validate($this->getValidationRules());
+
         $data = $request->all();
+
         $post = Post::findOrFail($id);
+
+        // Metodo fill + save
         // $post->fill($data);
-        // $post->slug = $this->generatePostSlug($post->title);
+        // $post->slug = Post::generatePostSlugFromTitle($post->title);
         // $post->save();
 
+        // Metodo update
         $data['slug'] = Post::generatePostSlugFromTitle($data['title']);
         $post->update($data);
 
@@ -124,12 +131,11 @@ class PostController extends Controller
     }
 
 
-
-    private function checkValidationRules()
+    private function getValidationRules()
     {
         return [
             'title' => 'required|max:255',
-            'content' => 'required|max:45000',
+            'content' => 'required|max:30000',
             'category_id' => 'nullable|exists:categories,id',
             'tags' => 'nullable|exists:tags,id'
         ];
