@@ -1,6 +1,19 @@
 <template>
   <div>
     <h2>Work in progress</h2>
+
+    <div class="container">
+            <div class="row row-cols-2">
+                <div v-for="item in posts" :key="item.id" class="col">
+                    <div class="card mb-4">
+                        <div class="contain-card">
+                            <h5 class="title-card">{{item.title}}</h5>
+                            <p>{{ item.content }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
   </div>
 </template>
 
@@ -9,10 +22,20 @@ export default {
     name: 'WorkInProgress',
 
     data() {
-        return {};
+        return {
+            posts: [],
+        };
     },
-    created() {},
-    methods: {},
+    created() {
+        this.getApiCall();
+    },
+    methods: {
+        getApiCall() {
+            axios.get("/api/posts").then((resp) => {
+                this.posts = resp.data.results;
+            });
+        },
+    },
 };
 </script>
 
