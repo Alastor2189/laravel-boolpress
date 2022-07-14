@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Work in progress</h2>
+    <h2>List Posts</h2>
 
     <div class="container">
             <div class="row row-cols-2">
@@ -12,6 +12,9 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="card-body">
+                <router-link :to="{ name: 'single-post', params: { slug: post.slug } }" class="card-link">Leggi post</router-link>
             </div>
     </div>
   </div>
